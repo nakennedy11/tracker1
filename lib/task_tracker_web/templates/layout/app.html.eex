@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>TaskTracker</title>
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.scss") %>"/>
+  </head>
+  <body>
+    <main role="main" class="container">
+      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <%= render @view_module, @view_template, assigns %>
+    </main>
+    <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    <div class="container">
+      <nav class="navbar navbar-expand-sm navbar-light bg-white">
+	<div class="col-4">
+	  <a class="navbar-brand" href="/">Task Tracker</a>
+	</div>
+	<div class="col-4">
+	  <ul class="navbar-nav mr-auto">
+	    <li class="nav-item active">
+	      <a class="nav-link" href="/">Home</a>
+	    </li>
+	    <li class="nav-item">
+	      <a class="nav-link" href="/tasks">Tasks</a>
+	    </li>
+	    <li>
+	      <a class="nav-link" href="/users/new">Register</a>
+	    </li>
+	  </ul>
+	</div>
+	<div class="col-4">
+	  <%= if @current_user do %>
+	  <p class="my-3">
+            User: <%= @current_user.email %> |
+            <%= link("Logout", to: Routes.session_path(@conn, :delete),
+		method: :delete) %>
+	  </p>
+	  <% else %>
+	  <%= form_for @conn, Routes.session_path(@conn, :create),
+              [class: "form-inline"], fn f -> %>
+	  <%= text_input f, :email, class: "form-control" %>
+	  <%= submit "Login", class: "btn btn-secondary" %>
+	  <% end %>
+	  <% end %>
+	</div>
+      </nav>
+  </body>
+</html>

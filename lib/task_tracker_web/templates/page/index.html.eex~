@@ -1,0 +1,1 @@
+<%= link "Register", to: Routes.user_path(@conn, new) %>
